@@ -110,3 +110,33 @@ Authorization: Bearer <token>
 Do note that with signed tokens, all the information contained within the token
 is exposed to users or other parties, even though they are unable to change it.
 This means you should not put secret information within the token.
+
+## What are JWT attacks?
+
+JWT attacks involve a user sending modified JWTs to the server in order to
+achieve a malicious goal. Typically, this goal is to bypass authentication and
+access controls by impersonating another user who has already been
+authenticated.
+
+### What is the impact of JWT attacks?
+
+The impact of JWT attacks is usually severe. If an attacker is able to create
+their own valid tokens with arbitrary values, they may be able to escalate their
+own privileges or impersonate other users, taking full control of their
+accounts.
+
+### How do vulnerabilities to JWT attacks arise?
+
+JWT vulnerabilities typically arise **due to flawed JWT handling within the
+application itself**. The various specifications related to JWTs are relatively
+flexible by design, allowing website developers to decide many implementation
+details for themselves. This can result in them accidentally introducing
+vulnerabilities even when using battle-hardened libraries.
+
+These implementation flaws usually mean that **the signature of the JWT is not
+verified properly**. This enables an attacker to tamper with the values passed to
+the application via the token's payload. Even if the signature is robustly
+verified, whether it can truly be trusted relies heavily on the server's secret
+key remaining a secret. If this key is leaked in some way, or can be guessed or
+brute-forced, an attacker can generate a valid signature for any arbitrary
+token, compromising the entire mechanism.
